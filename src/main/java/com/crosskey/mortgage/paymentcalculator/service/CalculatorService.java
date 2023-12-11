@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.crosskey.mortgage.paymentcalculator.model.CustomerLoanInfo;
+import com.crosskey.mortgage.paymentcalculator.utils.PaymentCalculator;
 
 @Service
 public class CalculatorService {
@@ -27,6 +28,9 @@ public class CalculatorService {
 
     Iterable<CSVRecord> csvRecords = csvFormat.parse(fileReader);
     for (CSVRecord csvRecord : csvRecords) {
+      if (csvRecord.size() != headers.length) {
+        continue;
+      }
       String customer = csvRecord.get("Customer");
       double totalLoan = Double.parseDouble(csvRecord.get("Total loan"));
       double interest = Double.parseDouble(csvRecord.get("Interest"));
@@ -38,5 +42,12 @@ public class CalculatorService {
     return customerList;
   }
 
-  // public List<CustomerLoanInfo> calculateMonthlyPayments(List<CustomerLoanInfo> customerList) {}
+  public List<CustomerLoanInfo> calculateMonthlyPayments(List<CustomerLoanInfo> customerList) {
+    for (CustomerLoanInfo info : customerList) {
+      info.setMonthlyPayment(
+          PaymentCalculator.calculateMonthlyPayment(
+              info.getTotalLoan(), info.getInterest(), info.getYears()));
+    }
+    return customerList;
+  }
 }
