@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.crosskey.mortgage.paymentcalculator.model.CustomerLoanInfo;
 import com.crosskey.mortgage.paymentcalculator.service.CalculatorService;
+import com.crosskey.mortgage.paymentcalculator.utils.PaymentCalculator;
 
 @RestController
 @RequestMapping("/api")
@@ -31,7 +32,8 @@ public class CalculatorController {
       @RequestParam("file") MultipartFile file) {
     try {
       List<CustomerLoanInfo> info = calculatorService.parseFile(file);
-      info = calculatorService.calculateMonthlyPayments(info);
+      info = PaymentCalculator.calculateMonthlyPaymentAndTotalCumulativeInterest(info);
+
       return new ResponseEntity<>(info, HttpStatus.OK);
     } catch (IOException e) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -1,5 +1,9 @@
 package com.crosskey.mortgage.paymentcalculator.utils;
 
+import java.util.List;
+
+import com.crosskey.mortgage.paymentcalculator.model.CustomerLoanInfo;
+
 public class PaymentCalculator {
   private PaymentCalculator() {}
 
@@ -27,5 +31,24 @@ public class PaymentCalculator {
     double factor = toPower(1 + monthlyInterestRate, numberOfPayments);
 
     return round(totalLoan * monthlyInterestRate * factor / (factor - 1));
+  }
+
+  public static double calculateTotalCumulativeInterest(
+      double totalLoan, double monthlyPayment, int numberOfYears) {
+    int numberOfPayments = numberOfYears * 12;
+    double totalAmountPaid = monthlyPayment * numberOfPayments;
+    return round(totalAmountPaid - totalLoan);
+  }
+
+  public static List<CustomerLoanInfo> calculateMonthlyPaymentAndTotalCumulativeInterest(
+      List<CustomerLoanInfo> infoList) {
+    for (CustomerLoanInfo info : infoList) {
+      info.setMonthlyPayment(
+          calculateMonthlyPayment(info.getTotalLoan(), info.getInterest(), info.getYears()));
+      info.setTotalCumulativeInterest(
+          calculateTotalCumulativeInterest(
+              info.getTotalLoan(), info.getMonthlyPayment(), info.getYears()));
+    }
+    return infoList;
   }
 }

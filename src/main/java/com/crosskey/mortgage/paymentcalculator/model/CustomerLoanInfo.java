@@ -13,6 +13,7 @@ public class CustomerLoanInfo {
   private double interest;
   private int years;
   private double monthlyPayment;
+  private double totalCumulativeInterest;
 
   public CustomerLoanInfo(String customer, double totalLoan, double interest, int years) {
     this.customer = customer;
