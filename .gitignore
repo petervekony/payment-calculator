@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -50,4 +49,5 @@ build/
 
 ### VS Code ###
 .vscode/
->>>>>>> a3d81f1 (initial commit)
+
+META-INF/
