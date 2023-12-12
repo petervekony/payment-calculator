@@ -1,11 +1,11 @@
-package com.crosskey.mortgage.paymentcalculator.utils;
+package com.crosskey.mortgage.core.utils;
 
 import java.util.List;
 
-import com.crosskey.mortgage.paymentcalculator.model.CustomerLoanInfo;
+import com.crosskey.mortgage.core.model.CustomerLoanInfo;
 
-public class PaymentCalculator {
-  private PaymentCalculator() {}
+public class PaymentCalculatorUtils {
+  private PaymentCalculatorUtils() {}
 
   private static double toPower(double base, int exponent) {
     double result = 1;

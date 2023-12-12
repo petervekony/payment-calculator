@@ -8,13 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.crosskey.mortgage.paymentcalculator.exception.FileEmptyException;
+import com.crosskey.mortgage.paymentcalculator.exception.FileSizeLimitExceededException;
+import com.crosskey.mortgage.paymentcalculator.exception.InvalidNumberFormatException;
+import com.crosskey.mortgage.paymentcalculator.exception.UnsupportedFileTypeException;
 import com.crosskey.mortgage.paymentcalculator.model.CustomerLoanInfo;
 import com.crosskey.mortgage.paymentcalculator.service.CalculatorService;
-import com.crosskey.mortgage.paymentcalculator.utils.PaymentCalculator;
+import com.crosskey.mortgage.paymentcalculator.utils.PaymentCalculatorUtils;
 
 @RestController
 @RequestMapping("/api")
@@ -29,14 +33,15 @@ public class CalculatorController {
 
   @PostMapping("/calculate")
   public ResponseEntity<List<CustomerLoanInfo>> calculateMonthlyPayments(
-      @RequestParam("file") MultipartFile file) {
-    try {
-      List<CustomerLoanInfo> info = calculatorService.parseFile(file);
-      info = PaymentCalculator.calculateMonthlyPaymentAndTotalCumulativeInterest(info);
+      @RequestPart MultipartFile file)
+      throws UnsupportedFileTypeException,
+          FileSizeLimitExceededException,
+          FileEmptyException,
+          InvalidNumberFormatException,
+          IOException {
+    List<CustomerLoanInfo> info = calculatorService.parseFile(file);
+    info = PaymentCalculatorUtils.calculateMonthlyPaymentAndTotalCumulativeInterest(info);
 
-      return new ResponseEntity<>(info, HttpStatus.OK);
-    } catch (IOException e) {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+    return new ResponseEntity<>(info, HttpStatus.OK);
   }
 }

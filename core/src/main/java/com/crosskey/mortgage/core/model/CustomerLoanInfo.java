@@ -1,4 +1,4 @@
-package com.crosskey.mortgage.paymentcalculator.model;
+package com.crosskey.mortgage.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
