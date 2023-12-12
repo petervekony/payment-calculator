@@ -25,6 +25,18 @@ public class PaymentCalculatorUtils {
 
   public static double calculateMonthlyPayment(
       double totalLoan, double annualInterestRate, int numberOfYears) {
+
+    if (totalLoan < 0 || annualInterestRate < 0 || numberOfYears < 0) {
+      throw new IllegalArgumentException("Error: Negative values are not allowed");
+    }
+    if (numberOfYears == 0) {
+      throw new IllegalArgumentException("Error: Number of years must be greater than zero");
+    }
+
+    if (annualInterestRate == 0) {
+      return round(totalLoan / (numberOfYears * 12));
+    }
+
     double monthlyInterestRate = annualInterestRate / 100 / 12;
     int numberOfPayments = numberOfYears * 12;
 
