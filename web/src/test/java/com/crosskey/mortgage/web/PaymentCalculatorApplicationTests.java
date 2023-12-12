@@ -1,4 +1,4 @@
-package com.crosskey.mortgage.paymentcalculator;
+package com.crosskey.mortgage.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
