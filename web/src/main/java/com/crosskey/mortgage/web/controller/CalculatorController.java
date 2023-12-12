@@ -1,4 +1,4 @@
-package com.crosskey.mortgage.paymentcalculator.controller;
+package com.crosskey.mortgage.web.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.crosskey.mortgage.paymentcalculator.exception.FileEmptyException;
-import com.crosskey.mortgage.paymentcalculator.exception.FileSizeLimitExceededException;
-import com.crosskey.mortgage.paymentcalculator.exception.InvalidNumberFormatException;
-import com.crosskey.mortgage.paymentcalculator.exception.UnsupportedFileTypeException;
-import com.crosskey.mortgage.paymentcalculator.model.CustomerLoanInfo;
-import com.crosskey.mortgage.paymentcalculator.service.CalculatorService;
-import com.crosskey.mortgage.paymentcalculator.utils.PaymentCalculatorUtils;
+import com.crosskey.mortgage.core.exception.FileEmptyException;
+import com.crosskey.mortgage.core.exception.FileSizeLimitExceededException;
+import com.crosskey.mortgage.core.exception.InvalidNumberFormatException;
+import com.crosskey.mortgage.core.exception.UnsupportedFileTypeException;
+import com.crosskey.mortgage.core.model.CustomerLoanInfo;
+import com.crosskey.mortgage.core.utils.PaymentCalculatorUtils;
+import com.crosskey.mortgage.web.service.CalculatorService;
 
 @RestController
 @RequestMapping("/api")
 public class CalculatorController {
 
-  private CalculatorService calculatorService;
+  private final CalculatorService calculatorService;
 
   @Autowired
   public CalculatorController(CalculatorService calculatorService) {
