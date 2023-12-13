@@ -9,8 +9,8 @@ services:
 
   nginx:
     build:
-      context: .
-      dockerfile: Dockerfile-nginx
+      context: ./nginx
+      dockerfile: Dockerfile
     volumes:
       - ${CERT_PATH}:/etc/nginx/ssl:ro
     environment:
