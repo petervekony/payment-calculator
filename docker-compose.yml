@@ -1,0 +1,24 @@
+services:
+  mortgage-calculator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    volumes:
+      - ${CERT_PATH}:/etc/nginx/ssl:ro
+    environment:
+      - SSL_CERT_NAME=${SSL_CERT_NAME}
+      - SSL_CERT_KEY_NAME=${SSL_CERT_KEY_NAME}
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - mortgage-calculator
