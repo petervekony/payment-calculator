@@ -27,7 +27,7 @@ public class CalculatorService {
   }
 
   public List<CustomerLoanInfo> parseFile(MultipartFile file)
-      throws FileEmptyException, IOException {
+      throws FileEmptyException, IOException, FileEmptyException, UnsupportedFileTypeException {
     if (file.isEmpty()) {
       throw new FileEmptyException("Error: file is empty");
     }
