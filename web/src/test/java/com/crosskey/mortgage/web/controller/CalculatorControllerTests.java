@@ -27,6 +27,8 @@ import com.crosskey.mortgage.core.model.CustomerLoanInfo;
 import com.crosskey.mortgage.web.service.CalculatorService;
 
 public class CalculatorControllerTests {
+  private static final String TEXT_TYPE = "text/plain";
+
   @Mock private CalculatorService calculatorService;
 
   @InjectMocks private CalculatorController calculatorController;
@@ -37,9 +39,9 @@ public class CalculatorControllerTests {
   }
 
   @Test
-  void calculateMonthlyPayments_ReturnsOk() throws Exception {
+  void calculateMonthlyPaymentsReturnsOk() throws Exception {
     MultipartFile file =
-        new MockMultipartFile("file", "filename.txt", "text/plain", "content".getBytes());
+        new MockMultipartFile("file", "filename.txt", TEXT_TYPE, "content".getBytes());
 
     ResponseEntity<List<CustomerLoanInfo>> response =
         calculatorController.calculateMonthlyPayments(file);
@@ -49,26 +51,23 @@ public class CalculatorControllerTests {
   }
 
   @Test
-  void calculateMonthlyPayments_ThrowsFileEmptyException() throws IOException {
-    MultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", new byte[0]);
+  void calculateMonthlyPaymentsThrowsFileEmptyException() throws IOException {
+    MultipartFile file = new MockMultipartFile("file", "filename.txt", TEXT_TYPE, new byte[0]);
     when(calculatorService.parseFile(any(MultipartFile.class)))
         .thenThrow(new FileEmptyException("Error: file is empty"));
 
     Exception exception =
         assertThrows(
-            FileEmptyException.class,
-            () -> {
-              calculatorController.calculateMonthlyPayments(file);
-            });
+            FileEmptyException.class, () -> calculatorController.calculateMonthlyPayments(file));
 
     assertTrue(exception.getMessage().contains("Error: file is empty"));
   }
 
   @Test
-  void calculateMonthlyPayments_ThrowsFileSizeLimitExceededException() throws Exception {
+  void calculateMonthlyPaymentsThrowsFileSizeLimitExceededException() throws Exception {
     byte[] largeFileContent = new byte[1048577]; // 1MB + 1 byte
     MockMultipartFile file =
-        new MockMultipartFile("file", "largefile.txt", "text/plain", largeFileContent);
+        new MockMultipartFile("file", "largefile.txt", TEXT_TYPE, largeFileContent);
 
     when(calculatorService.parseFile(any(MultipartFile.class)))
         .thenThrow(new FileSizeLimitExceededException("Error: file size limit (1MB) exceeded"));
@@ -81,7 +80,7 @@ public class CalculatorControllerTests {
   }
 
   @Test
-  void calculateMonthlyPayments_ThrowsUnsupportedFileTypeException() throws Exception {
+  void calculateMonthlyPaymentsThrowsUnsupportedFileTypeException() throws Exception {
     MockMultipartFile file =
         new MockMultipartFile("file", "filename.pdf", "application/pdf", "content".getBytes());
 

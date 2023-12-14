@@ -23,6 +23,7 @@ import com.crosskey.mortgage.core.model.CustomerLoanInfo;
 import com.crosskey.mortgage.core.service.CoreCalculatorService;
 
 public class MainTests {
+  private static final String EXCEPTION_MSG = "Test exception";
 
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -80,7 +81,7 @@ public class MainTests {
   @Test
   void testMainMethodFileNotFound() throws IOException {
     CoreCalculatorService mockService = mock(CoreCalculatorService.class);
-    when(mockService.parseFile(any())).thenThrow(new IOException("Test exception"));
+    when(mockService.parseFile(any())).thenThrow(new IOException(EXCEPTION_MSG));
 
     Main main = new Main(mockService);
     main.run(new String[] {"mockFilePath"});
@@ -95,12 +96,12 @@ public class MainTests {
     tempFile.deleteOnExit();
 
     CoreCalculatorService mockService = mock(CoreCalculatorService.class);
-    when(mockService.parseFile(any())).thenThrow(new IOException("Test exception"));
+    when(mockService.parseFile(any())).thenThrow(new IOException(EXCEPTION_MSG));
 
     Main main = new Main(mockService);
     main.run(new String[] {tempFile.getAbsolutePath()});
 
     restoreStreams();
-    assertTrue(errContent.toString().contains("Test exception"));
+    assertTrue(errContent.toString().contains(EXCEPTION_MSG));
   }
 }
