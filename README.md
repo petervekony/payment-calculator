@@ -99,7 +99,7 @@ docker-compose build
 docker-compose up
 ```
 
-For this to work, you need to set three environment variables on your machine:
+For this to work, you need to set three environment variables on the machine you are hosting it:
 
 - CERT_PATH: absolute path to the directory where the SSL certificates are
   placed
